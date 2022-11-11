@@ -13,7 +13,7 @@ func ClusterDetails() {
 	clusters := ocm.ListClusters()
 
 	if clusters.Len() == 0 {
-		fmt.Printf("No clusters active in OCM %s", ocm.Connection.URL())
+		fmt.Printf("No clusters active in OCM %s\n", ocm.Connection.URL())
 		return
 	}
 
@@ -46,7 +46,7 @@ func ClusterDetails() {
   UP TIME (H:M:S)     : %s
   DELETION            : %s
   CLUSTER ACCESS      :
-    $ ocm-toolbox cluster-credentials --cluster-id %s
+    $ ocm-toolbox cluster-credentials --cluster-id %s --url %s
     $ export KUBECONFIG=%s-kubeconfig
     $ oc cluster-info`,
 		cluster.Name(),
@@ -64,6 +64,7 @@ func ClusterDetails() {
 		timeDiff.Format("15:4:5"),
 		cluster.ExpirationTimestamp(),
 		cluster.ID(),
+		ocm.Connection.URL(),
 		cluster.Name())
 		fmt.Println()
 	}
