@@ -2,6 +2,7 @@ package clusterdetails
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/ryankwilliams/ocm-toolbox/pkg/ocm"
 )
@@ -17,6 +18,19 @@ func ClusterDetails() {
 	}
 
 	for _, cluster := range clusters.Slice() {
+		creation := cluster.CreationTimestamp()
+		creationTime := time.Date(
+			creation.Year(),
+			creation.Month(),
+			creation.Day(),
+			creation.Hour(),
+			creation.Minute(),
+			creation.Second(),
+			creation.Nanosecond(),
+			creation.Location())
+		currentTime := time.Now().UTC()
+		timeDiff := time.Time{}.Add(currentTime.Sub(creationTime))
+
 		fmt.Printf(`Cluster: %s
   ID                  : %s
   API URL             : %s
@@ -29,6 +43,7 @@ func ClusterDetails() {
   CONTROL PLANE NODES : %v
   COMPUTE NODES       : %v
   CREATION            : %s
+  UP TIME (H:M:S)     : %s
   DELETION            : %s
   CLUSTER ACCESS      :
     $ ocm-toolbox cluster-credentials --cluster-id %s
@@ -46,6 +61,7 @@ func ClusterDetails() {
 		cluster.Nodes().Master(),
 		cluster.Nodes().Compute(),
 		cluster.CreationTimestamp(),
+		timeDiff.Format("15:4:5"),
 		cluster.ExpirationTimestamp(),
 		cluster.ID(),
 		cluster.Name())
