@@ -24,7 +24,7 @@ func init() {
 		"",
 		"OCM Cluster ID",
 	)
-	Cmd.MarkFlagRequired("cluster-id")
+	Cmd.MarkFlagRequired("cluster-id")	// nolint:errcheck
 }
 
 func run(cmd *cobra.Command, argv []string) {

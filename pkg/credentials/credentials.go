@@ -12,10 +12,22 @@ func GetClusterCredentials(clusterID string) {
 	clusterName, clusterCredentials := ocm.GetClusterCredentials(clusterID)
 
 	kubeconfigFilename := clusterName + "-kubeconfig"
-	os.WriteFile(kubeconfigFilename, []byte(clusterCredentials.Kubeconfig()), 0600)
+	err := os.WriteFile(kubeconfigFilename, []byte(clusterCredentials.Kubeconfig()), 0600)
+
+	if err != nil {
+		fmt.Printf("Failed to write kubeconfig to disk, error: %s\n", err)
+		os.Exit(1)
+	}
+
 	fmt.Printf("Cluster: %s, kubeconfig: %s\n", clusterName, kubeconfigFilename)
 
 	adminPasswordFilename := clusterName + "-kubeadmin-password"
-	os.WriteFile(adminPasswordFilename, []byte(clusterCredentials.Admin().Password()), 0600)
+	err = os.WriteFile(adminPasswordFilename, []byte(clusterCredentials.Admin().Password()), 0600)
+
+	if err != nil {
+		fmt.Printf("Failed to write kubeadmin password to disk, error: %s\n", err)
+		os.Exit(1)
+	}
+
 	fmt.Printf("Cluster: %s, kubeadmin password: %s\n", clusterName, adminPasswordFilename)
 }
