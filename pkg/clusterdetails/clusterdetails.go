@@ -49,23 +49,23 @@ func ClusterDetails() {
     $ ocm-toolbox cluster-credentials --cluster-id %s --url %s
     $ export KUBECONFIG=%s-kubeconfig
     $ oc cluster-info`,
-		cluster.Name(),
-		cluster.ID(),
-		cluster.API().URL(),
-		cluster.Console().URL(),
-		cluster.OpenshiftVersion(),
-		cluster.Product().ID(),
-		cluster.CloudProvider().ID(),
-		cluster.Region().ID(),
-		cluster.State(),
-		cluster.Nodes().Master(),
-		cluster.Nodes().Compute(),
-		cluster.CreationTimestamp(),
-		timeDiff.Format("15:4:5"),
-		cluster.ExpirationTimestamp(),
-		cluster.ID(),
-		ocm.Connection.URL(),
-		cluster.Name())
+			cluster.Name(),
+			cluster.ID(),
+			cluster.API().URL(),
+			cluster.Console().URL(),
+			cluster.OpenshiftVersion(),
+			cluster.Product().ID(),
+			cluster.CloudProvider().ID(),
+			cluster.Region().ID(),
+			cluster.State(),
+			cluster.Nodes().Master(),
+			cluster.Nodes().Compute(),
+			cluster.CreationTimestamp(),
+			timeDiff.Format("15:4:5"),
+			cluster.ExpirationTimestamp(),
+			cluster.ID(),
+			ocm.Connection.URL(),
+			cluster.Name())
 		fmt.Println()
 	}
 }

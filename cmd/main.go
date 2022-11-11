@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/ryankwilliams/ocm-toolbox/cmd/credentials"
 	"github.com/ryankwilliams/ocm-toolbox/cmd/clusterdetails"
+	"github.com/ryankwilliams/ocm-toolbox/cmd/credentials"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -12,8 +12,8 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "ocm-toolbox",
 	Short: "Helpful commands used on a daily basis while working with OCM",
-	Long: "Helpful commands used on a daily basis while working with OCM",
-	Run: run,
+	Long:  "Helpful commands used on a daily basis while working with OCM",
+	Run:   run,
 }
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 
 var flags struct {
 	token string
-	url string
+	url   string
 }
 
 func init() {

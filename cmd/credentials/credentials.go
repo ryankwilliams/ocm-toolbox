@@ -6,10 +6,10 @@ import (
 )
 
 var Cmd = &cobra.Command{
-	Use: "cluster-credentials",
+	Use:   "cluster-credentials",
 	Short: "Get credentials about a given cluster",
-	Long: "Get credentials about a given cluster",
-	Run: run,
+	Long:  "Get credentials about a given cluster",
+	Run:   run,
 }
 
 var flags struct {
