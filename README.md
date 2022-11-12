@@ -2,7 +2,9 @@
 
 Collection of command line tools to help with day to day tasks while working with OCM
 
-## Build Binary
+## Usage
+
+### Build Binary
 
 To use ocm-toolbox locally, you will need to build the binary. A make
 target exists for this:
@@ -13,6 +15,15 @@ make build
 
 On completion, a directory named `out` will contain the `ocm-toolbox`
 binary.
+
+### Container Image
+
+You can also use ocm-toolbox using the container image below:
+
+```shell
+podman pull ghcr.io/ryankwilliams/ocm-toolbox:main
+podman run ghcr.io/ryankwilliams/ocm-toolbox:main --help
+```
 
 ## Usage
 

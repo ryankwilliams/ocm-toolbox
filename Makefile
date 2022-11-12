@@ -6,7 +6,7 @@ build:
 	go build -o "$(OUTPUT_DIR)/ocm-toolbox" "cmd/main.go"
 
 build-image:
-	$(CONTAINER_ENGINE) build -t ocm-toolbox:latest .
+	$(CONTAINER_ENGINE) build -t ocm-toolbox:main .
 
 format:
 	gofmt -s -w .
