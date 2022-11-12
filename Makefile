@@ -1,8 +1,12 @@
+CONTAINER_ENGINE ?= podman
 OUTPUT_DIR = out
 
 build:
 	mkdir -p "$(OUTPUT_DIR)"
 	go build -o "$(OUTPUT_DIR)/ocm-toolbox" "cmd/main.go"
+
+build-image:
+	$(CONTAINER_ENGINE) build -t ocm-toolbox:latest .
 
 format:
 	gofmt -s -w .
