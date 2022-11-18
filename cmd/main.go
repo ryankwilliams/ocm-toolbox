@@ -46,8 +46,8 @@ func init() {
 	)
 
 	viper.SetDefault("ocmToken", os.Getenv("OCM_TOKEN"))
-	viper.BindPFlag("ocmToken", rootCmd.PersistentFlags().Lookup("token"))	// nolint:errcheck
-	viper.BindPFlag("ocmUrl", rootCmd.PersistentFlags().Lookup("url"))	// nolint:errcheck
+	viper.BindPFlag("ocmToken", rootCmd.PersistentFlags().Lookup("token")) // nolint:errcheck
+	viper.BindPFlag("ocmUrl", rootCmd.PersistentFlags().Lookup("url"))     // nolint:errcheck
 
 	rootCmd.AddCommand(credentials.Cmd)
 	rootCmd.AddCommand(clusterdetails.Cmd)

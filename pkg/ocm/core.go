@@ -15,9 +15,21 @@ type OCMInstance struct {
 	Connection *sdk.Connection
 }
 
+func getOcmApiUrl() string {
+	ocmUrl := viper.GetString("ocmUrl")
+
+	switch ocmUrl {
+	case "https://api.openshift.com", "prod":
+		ocmUrl = "https://api.openshift.com"
+	case "https://api.stage.openshift.com", "staging":
+		ocmUrl = "https://api.stage.openshift.com"
+	}
+
+	return ocmUrl
+}
+
 func Connect() *OCMInstance {
 	token := viper.GetString("ocmToken")
-	ocmUrl := viper.GetString("ocmUrl")
 
 	ctx := context.Background()
 
@@ -32,7 +44,7 @@ func Connect() *OCMInstance {
 	connection, err := sdk.NewConnectionBuilder().
 		Logger(logger).
 		Tokens(token).
-		URL(ocmUrl).
+		URL(getOcmApiUrl()).
 		BuildContext(ctx)
 
 	if err != nil {
