@@ -1,7 +1,8 @@
-FROM golang:1.19
-ARG TMP_DIR=/tmp/ocm-toolbox
-WORKDIR ${TMP_DIR}
-ADD . ${TMP_DIR}
-RUN go build -o /usr/local/bin/ocm-toolbox cmd/main.go
-RUN rm -rf ${TMP_DIR}
+FROM golang:1.19 AS build
+WORKDIR /tmp/src
+COPY . /tmp/src
+RUN go build -o /tmp/ocm-toolbox cmd/main.go
+
+FROM alpine:latest
+COPY --from=build /tmp/ocm-toolbox /usr/local/bin/ocm-toolbox
 ENTRYPOINT [ "ocm-toolbox" ]
