@@ -4,20 +4,34 @@ import (
 	"fmt"
 	"time"
 
+	v1 "github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
 	"github.com/ryankwilliams/ocm-toolbox/pkg/ocm"
 )
 
-func ClusterDetails() {
+type ClusterFilters struct {
+	ID string
+}
+
+func ClusterDetails(clusterFilters *ClusterFilters) {
 	ocm := ocm.Connect()
 
-	clusters := ocm.ListClusters()
+	var presentClusters []*v1.Cluster
 
-	if clusters.Len() == 0 {
-		fmt.Printf("No clusters active in OCM %s\n", ocm.Connection.URL())
+	if clusterFilters.ID != "" {
+		cluster := ocm.GetCluster(clusterFilters.ID)
+		presentClusters = make([]*v1.Cluster, 0)
+		presentClusters = append(presentClusters, cluster)
+	} else {
+		clusters := ocm.ListClusters()
+		presentClusters = clusters.Slice()
+	}
+
+	if len(presentClusters) == 0 {
+		fmt.Printf("No clusters found in OCM %s\n", ocm.Connection.URL())
 		return
 	}
 
-	for _, cluster := range clusters.Slice() {
+	for _, cluster := range presentClusters {
 		creation := cluster.CreationTimestamp()
 		creationTime := time.Date(
 			creation.Year(),

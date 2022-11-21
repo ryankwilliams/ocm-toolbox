@@ -12,8 +12,22 @@ var Cmd = &cobra.Command{
 	Run:   run,
 }
 
-func init() {}
+var flags struct {
+	clusterID string
+}
+
+func init() {
+	Cmd.Flags().StringVarP(
+		&flags.clusterID,
+		"cluster-id",
+		"",
+		"",
+		"OCM Cluster ID (query for an exact match)",
+	)
+}
 
 func run(cmd *cobra.Command, argv []string) {
-	clusterdetails.ClusterDetails()
+	clusterdetails.ClusterDetails(&clusterdetails.ClusterFilters{
+		ID: flags.clusterID,
+	})
 }
