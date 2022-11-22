@@ -69,19 +69,25 @@ func (o *OCMInstance) ListClusters() *v1.ClusterList {
 	return clusters
 }
 
-func (o *OCMInstance) GetCluster(clusterID string) *v1.Cluster {
-	response, err := o.Connection.ClustersMgmt().V1().Clusters().Cluster(clusterID).Get().Send()
+func (o *OCMInstance) GetCluster(clusterID string) (*v1.ClusterClient, *v1.ClusterGetResponse) {
+	cluster := o.Connection.ClustersMgmt().V1().Clusters().Cluster(clusterID)
 
+	response, err := cluster.Get().Send()
 	if err != nil {
 		fmt.Printf("Unable to find cluster: %s in OCM, error: %s", clusterID, err)
 		os.Exit(1)
 	}
 
+	return cluster, response
+}
+
+func (o *OCMInstance) GetClusterBody(clusterID string) *v1.Cluster {
+	_, response := o.GetCluster(clusterID)
 	return response.Body()
 }
 
 func (o *OCMInstance) GetClusterCredentials(clusterID string) (string, *v1.ClusterCredentials) {
-	cluster := o.GetCluster(clusterID)
+	cluster := o.GetClusterBody(clusterID)
 
 	response, err := o.Connection.ClustersMgmt().V1().Clusters().
 		Cluster(clusterID).

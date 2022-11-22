@@ -18,7 +18,7 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 	var presentClusters []*v1.Cluster
 
 	if clusterFilters.ID != "" {
-		cluster := ocm.GetCluster(clusterFilters.ID)
+		cluster := ocm.GetClusterBody(clusterFilters.ID)
 		presentClusters = make([]*v1.Cluster, 0)
 		presentClusters = append(presentClusters, cluster)
 	} else {

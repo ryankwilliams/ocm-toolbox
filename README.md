@@ -51,3 +51,10 @@ Each sub-command will have different options and a help menu.
 ```shell
 ./out/ocm-toolbox cluster-credentials --cluster-id <CLUSTER_ID>
 ```
+
+3. Update cluster expiration timestamp
+
+```shell
+./out/ocm-toolbox set-cluster-expiration --cluster-id <CLUSTER_ID> \
+--duration 60
+```

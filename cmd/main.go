@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/ryankwilliams/ocm-toolbox/cmd/clusterdetails"
+	"github.com/ryankwilliams/ocm-toolbox/cmd/clusterexpiration"
 	"github.com/ryankwilliams/ocm-toolbox/cmd/credentials"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -51,6 +52,7 @@ func init() {
 
 	rootCmd.AddCommand(credentials.Cmd)
 	rootCmd.AddCommand(clusterdetails.Cmd)
+	rootCmd.AddCommand(clusterexpiration.Cmd)
 }
 
 func run(cmd *cobra.Command, argv []string) {}
