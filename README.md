@@ -16,6 +16,14 @@ make build
 On completion, a directory named `out` will contain the `ocm-toolbox`
 binary.
 
+### Go Install
+
+You can also get ocm-toolbox by using `go install`.
+
+```shell
+go install github.com/ryankwilliams/ocm-toolbox@latest
+```
+
 ### Container Image
 
 You can also use ocm-toolbox using the container image below:
