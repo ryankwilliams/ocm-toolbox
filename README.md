@@ -21,7 +21,7 @@ binary.
 You can also get ocm-toolbox by using `go install`.
 
 ```shell
-go install github.com/ryankwilliams/ocm-toolbox@latest
+go install github.com/ryankwilliams/ocm-toolbox@main
 ```
 
 ### Container Image
