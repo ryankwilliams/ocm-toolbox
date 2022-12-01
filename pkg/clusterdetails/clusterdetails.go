@@ -9,7 +9,8 @@ import (
 )
 
 type ClusterFilters struct {
-	ID string
+	ID        string
+	NameRegex string
 }
 
 func ClusterDetails(clusterFilters *ClusterFilters) {
@@ -21,6 +22,8 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		cluster := ocm.GetClusterBody(clusterFilters.ID)
 		presentClusters = make([]*v1.Cluster, 0)
 		presentClusters = append(presentClusters, cluster)
+	} else if clusterFilters.NameRegex != "" {
+		presentClusters = ocm.ListClustersRegex(clusterFilters.NameRegex)
 	} else {
 		clusters := ocm.ListClusters()
 		presentClusters = clusters.Slice()

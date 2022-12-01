@@ -13,7 +13,8 @@ var Cmd = &cobra.Command{
 }
 
 var flags struct {
-	clusterID string
+	clusterID        string
+	clusterNameRegex string
 }
 
 func init() {
@@ -22,12 +23,20 @@ func init() {
 		"cluster-id",
 		"",
 		"",
-		"OCM Cluster ID (query for an exact match)",
+		"OCM cluster id (query for an exact match)",
+	)
+	Cmd.Flags().StringVarP(
+		&flags.clusterNameRegex,
+		"cluster-name-regex",
+		"",
+		"",
+		"Regular expression to filter ocm clusters by name",
 	)
 }
 
 func run(cmd *cobra.Command, argv []string) {
 	clusterdetails.ClusterDetails(&clusterdetails.ClusterFilters{
-		ID: flags.clusterID,
+		ID:        flags.clusterID,
+		NameRegex: flags.clusterNameRegex,
 	})
 }

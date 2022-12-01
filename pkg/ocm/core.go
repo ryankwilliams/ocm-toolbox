@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
 
 	sdk "github.com/openshift-online/ocm-sdk-go"
 	"github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
@@ -84,6 +85,19 @@ func (o *OCMInstance) GetCluster(clusterID string) (*v1.ClusterClient, *v1.Clust
 func (o *OCMInstance) GetClusterBody(clusterID string) *v1.Cluster {
 	_, response := o.GetCluster(clusterID)
 	return response.Body()
+}
+
+func (o *OCMInstance) ListClustersRegex(regex string) []*v1.Cluster {
+	clusters := o.ListClusters()
+
+	var clusterList []*v1.Cluster
+
+	for _, cluster := range clusters.Slice() {
+		if match, _ := regexp.MatchString(regex, cluster.Name()); match {
+			clusterList = append(clusterList, cluster)
+		}
+	}
+	return clusterList
 }
 
 func (o *OCMInstance) GetClusterCredentials(clusterID string) (string, *v1.ClusterCredentials) {
