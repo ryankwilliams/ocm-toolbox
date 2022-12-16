@@ -44,7 +44,7 @@ require (
 
 require (
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
-	github.com/openshift-online/ocm-sdk-go v0.1.300
+	github.com/openshift-online/ocm-sdk-go v0.1.301
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.14.0
 )
