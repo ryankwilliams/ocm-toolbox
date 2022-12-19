@@ -14,23 +14,23 @@ type ClusterFilters struct {
 }
 
 func ClusterDetails(clusterFilters *ClusterFilters) {
-	ocm := ocm.Connect()
+	ocmInstance := ocm.Connect()
 
 	var presentClusters []*v1.Cluster
 
 	if clusterFilters.ID != "" {
-		cluster := ocm.GetClusterBody(clusterFilters.ID)
+		cluster := ocmInstance.GetClusterBody(clusterFilters.ID)
 		presentClusters = make([]*v1.Cluster, 0)
 		presentClusters = append(presentClusters, cluster)
 	} else if clusterFilters.NameRegex != "" {
-		presentClusters = ocm.ListClustersRegex(clusterFilters.NameRegex)
+		presentClusters = ocmInstance.ListClustersRegex(clusterFilters.NameRegex)
 	} else {
-		clusters := ocm.ListClusters()
+		clusters := ocmInstance.ListClusters()
 		presentClusters = clusters.Slice()
 	}
 
 	if len(presentClusters) == 0 {
-		fmt.Printf("No clusters found in OCM %s\n", ocm.Connection.URL())
+		fmt.Printf("No clusters found in ocm %s\n", ocmInstance.Connection.URL())
 		return
 	}
 
@@ -47,6 +47,7 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 			creation.Location())
 		currentTime := time.Now().UTC()
 		timeDiff := time.Time{}.Add(currentTime.Sub(creationTime))
+		_, apiUrlShort := ocm.GetOcmApiUrl()
 
 		fmt.Printf(`Cluster: %s
   ID                  : %s
@@ -81,8 +82,10 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 			timeDiff.Format("15:4:5"),
 			cluster.ExpirationTimestamp(),
 			cluster.ID(),
-			ocm.Connection.URL(),
+			apiUrlShort,
 			cluster.Name())
 		fmt.Println()
 	}
+
+	fmt.Printf("Total clusters: %v\n", len(presentClusters))
 }

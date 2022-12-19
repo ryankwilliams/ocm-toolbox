@@ -7,7 +7,7 @@ import (
 	"regexp"
 
 	sdk "github.com/openshift-online/ocm-sdk-go"
-	"github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
+	v1 "github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
 	"github.com/openshift-online/ocm-sdk-go/logging"
 	"github.com/spf13/viper"
 )
@@ -16,17 +16,20 @@ type OCMInstance struct {
 	Connection *sdk.Connection
 }
 
-func getOcmApiUrl() string {
+func GetOcmApiUrl() (string, string) {
 	ocmUrl := viper.GetString("ocmUrl")
+	ocmShort := ""
 
 	switch ocmUrl {
 	case "https://api.openshift.com", "prod":
 		ocmUrl = "https://api.openshift.com"
+		ocmShort = "prod"
 	case "https://api.stage.openshift.com", "staging":
 		ocmUrl = "https://api.stage.openshift.com"
+		ocmShort = "staging"
 	}
 
-	return ocmUrl
+	return ocmUrl, ocmShort
 }
 
 func Connect() *OCMInstance {
@@ -42,10 +45,12 @@ func Connect() *OCMInstance {
 		panic(err)
 	}
 
+	apiUrl, _ := GetOcmApiUrl()
+
 	connection, err := sdk.NewConnectionBuilder().
 		Logger(logger).
 		Tokens(token).
-		URL(getOcmApiUrl()).
+		URL(apiUrl).
 		BuildContext(ctx)
 
 	if err != nil {
