@@ -69,7 +69,7 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 		cluster.Product().ID())
 
 	if cluster.Product().ID() == "rosa" {
-		clusterInfo += fmt.Sprintf("\n  ROSA HCP            : %v", cluster.Version().HypershiftEnabled())
+		clusterInfo += fmt.Sprintf("\n  ROSA HCP            : %v", cluster.Hypershift().Enabled())
 	}
 
 	clusterInfo += fmt.Sprintf(`
