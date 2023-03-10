@@ -49,12 +49,30 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		timeDiff := time.Time{}.Add(currentTime.Sub(creationTime))
 		_, apiUrlShort := ocm.GetOcmApiUrl()
 
-		fmt.Printf(`Cluster: %s
+		fmt.Println(clusterInfoFormatted(*cluster, timeDiff, apiUrlShort))
+		fmt.Printf("Total clusters: %v\n", len(presentClusters))
+	}
+}
+
+func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort string) string {
+	clusterInfo := fmt.Sprintf(`Cluster: %s
   ID                  : %s
   API URL             : %s
   CONSOLE URL         : %s
   OPENSHIFT VERSION   : %s
-  PRODUCT ID          : %s
+  PRODUCT ID          : %v`,
+		cluster.Name(),
+		cluster.ID(),
+		cluster.API().URL(),
+		cluster.Console().URL(),
+		cluster.OpenshiftVersion(),
+		cluster.Product().ID())
+
+	if cluster.Product().ID() == "rosa" {
+		clusterInfo += fmt.Sprintf("\n  ROSA HCP            : %v", cluster.Version().HypershiftEnabled())
+	}
+
+	clusterInfo += fmt.Sprintf(`
   CLOUD PROVIDER      : %s
   REGION              : %s
   STATE               : %s
@@ -67,25 +85,17 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
     $ ocm-toolbox cluster-credentials --cluster-id %s --url %s
     $ export KUBECONFIG=%s-kubeconfig
     $ oc cluster-info`,
-			cluster.Name(),
-			cluster.ID(),
-			cluster.API().URL(),
-			cluster.Console().URL(),
-			cluster.OpenshiftVersion(),
-			cluster.Product().ID(),
-			cluster.CloudProvider().ID(),
-			cluster.Region().ID(),
-			cluster.State(),
-			cluster.Nodes().Master(),
-			cluster.Nodes().Compute(),
-			cluster.CreationTimestamp(),
-			timeDiff.Format("15:4:5"),
-			cluster.ExpirationTimestamp(),
-			cluster.ID(),
-			apiUrlShort,
-			cluster.Name())
-		fmt.Println()
-	}
+		cluster.CloudProvider().ID(),
+		cluster.Region().ID(),
+		cluster.State(),
+		cluster.Nodes().Master(),
+		cluster.Nodes().Compute(),
+		cluster.CreationTimestamp(),
+		timeDiff.Format("15:4:5"),
+		cluster.ExpirationTimestamp(),
+		cluster.ID(),
+		apiUrlShort,
+		cluster.Name())
 
-	fmt.Printf("Total clusters: %v\n", len(presentClusters))
+	return clusterInfo
 }
