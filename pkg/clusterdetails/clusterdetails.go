@@ -50,8 +50,9 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		_, apiUrlShort := ocm.GetOcmApiUrl()
 
 		fmt.Println(clusterInfoFormatted(*cluster, timeDiff, apiUrlShort))
-		fmt.Printf("Total clusters: %v\n", len(presentClusters))
 	}
+
+	fmt.Printf("Total clusters: %v\n", len(presentClusters))
 }
 
 func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort string) string {
