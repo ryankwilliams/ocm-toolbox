@@ -2,6 +2,7 @@ package clusterdetails
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	v1 "github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
@@ -13,7 +14,16 @@ type ClusterFilters struct {
 	NameRegex string
 }
 
+var currentDirectory *string
+
 func ClusterDetails(clusterFilters *ClusterFilters) {
+	directory, err := os.Getwd()
+	currentDirectory = &directory
+	if err != nil {
+		fmt.Printf("Unable to locate current working directory: %v", err)
+		return
+	}
+
 	ocmInstance := ocm.Connect()
 
 	var presentClusters []*v1.Cluster
@@ -84,7 +94,7 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
   DELETION            : %s
   CLUSTER ACCESS      :
     $ ocm-toolbox cluster-credentials --cluster-id %s --url %s
-    $ export KUBECONFIG=%s-kubeconfig
+    $ export KUBECONFIG=%s/%s-kubeconfig
     $ oc cluster-info`,
 		cluster.CloudProvider().ID(),
 		cluster.Region().ID(),
@@ -96,6 +106,7 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 		cluster.ExpirationTimestamp(),
 		cluster.ID(),
 		apiUrlShort,
+		*currentDirectory,
 		cluster.Name())
 
 	return clusterInfo
