@@ -84,18 +84,20 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 	}
 
 	clusterInfo += fmt.Sprintf(`
-  CLOUD PROVIDER      : %s
-  REGION              : %s
-  STATE               : %s
-  CONTROL PLANE NODES : %v
-  COMPUTE NODES       : %v
-  CREATION            : %s
-  UP TIME (H:M:S)     : %s
-  DELETION            : %s
-  CLUSTER ACCESS      :
+  CLOUD PROVIDER         : %s
+  REGION                 : %s
+  STATE                  : %s
+  CONTROL PLANE NODES    : %v
+  COMPUTE NODES          : %v
+  CREATION               : %s
+  UP TIME (H:M:S)        : %s
+  DELETION               : %s
+  CLUSTER ACCESS         :
     $ ocm-toolbox cluster-credentials --cluster-id %s --url %s
     $ export KUBECONFIG=%s/%s-kubeconfig
-    $ oc cluster-info`,
+    $ oc cluster-info
+  SET CLUSTER EXPIRATION :
+    $ ocm-toolbox set-cluster-expiration --cluster-id %s --duration <duration-in-minutes> --url %s`,
 		cluster.CloudProvider().ID(),
 		cluster.Region().ID(),
 		cluster.State(),
@@ -107,7 +109,10 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 		cluster.ID(),
 		apiUrlShort,
 		*currentDirectory,
-		cluster.Name())
+		cluster.Name(),
+		cluster.ID(),
+		apiUrlShort,
+	)
 
 	return clusterInfo
 }
