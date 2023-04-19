@@ -67,11 +67,11 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 
 func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort string) string {
 	clusterInfo := fmt.Sprintf(`Cluster: %s
-  ID                  : %s
-  API URL             : %s
-  CONSOLE URL         : %s
-  OPENSHIFT VERSION   : %s
-  PRODUCT ID          : %v`,
+  ID                     : %s
+  API URL                : %s
+  CONSOLE URL            : %s
+  OPENSHIFT VERSION      : %s
+  PRODUCT ID             : %v`,
 		cluster.Name(),
 		cluster.ID(),
 		cluster.API().URL(),
@@ -80,7 +80,7 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 		cluster.Product().ID())
 
 	if cluster.Product().ID() == "rosa" {
-		clusterInfo += fmt.Sprintf("\n  ROSA HCP            : %v", cluster.Hypershift().Enabled())
+		clusterInfo += fmt.Sprintf("\n  ROSA HCP               : %v", cluster.Hypershift().Enabled())
 	}
 
 	clusterInfo += fmt.Sprintf(`
