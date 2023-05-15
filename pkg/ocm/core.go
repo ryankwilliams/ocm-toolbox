@@ -27,6 +27,9 @@ func GetOcmApiUrl() (string, string) {
 	case "https://api.stage.openshift.com", "staging":
 		ocmUrl = "https://api.stage.openshift.com"
 		ocmShort = "staging"
+	case "https://api.integration.openshift.com", "integration":
+		ocmUrl = "https://api.integration.openshift.com"
+		ocmShort = "integration"
 	}
 
 	return ocmUrl, ocmShort
