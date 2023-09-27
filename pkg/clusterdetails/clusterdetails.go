@@ -44,7 +44,7 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 
 	for _, cluster := range presentClusters {
 		product_id := cluster.Product().ID()
-		if product_id == "osd" || product_id == "rosa" {
+		if product_id != "ocp" {
 			filteredClusters = append(filteredClusters, cluster)
 		}
 	}
