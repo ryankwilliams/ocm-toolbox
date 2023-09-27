@@ -10,8 +10,9 @@ import (
 )
 
 type ClusterFilters struct {
-	ID        string
-	NameRegex string
+	ID              string
+	NameRegex       string
+	ManagedClusters bool
 }
 
 var currentDirectory *string
@@ -37,6 +38,11 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 	} else {
 		clusters := ocmInstance.ListClusters()
 		presentClusters = clusters.Slice()
+	}
+
+	// Filter clusters to only get managed clusters
+	if clusterFilters.ManagedClusters {
+		presentClusters = ocmInstance.ListManagedClusters(presentClusters)
 	}
 
 	if len(presentClusters) == 0 {
