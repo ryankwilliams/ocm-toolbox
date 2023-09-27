@@ -39,12 +39,22 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		presentClusters = clusters.Slice()
 	}
 
-	if len(presentClusters) == 0 {
+	// Prompt only OSD/ROSA clusters
+	var filteredClusters []*v1.Cluster
+
+	for _, cluster := range presentClusters {
+		product_id := cluster.Product().ID()
+		if product_id == "osd" || product_id == "rosa" {
+			filteredClusters = append(filteredClusters, cluster)
+		}
+	}
+
+	if len(filteredClusters) == 0 {
 		fmt.Printf("No clusters found in ocm %s\n", ocmInstance.Connection.URL())
 		return
 	}
 
-	for _, cluster := range presentClusters {
+	for _, cluster := range filteredClusters {
 		creation := cluster.CreationTimestamp()
 		creationTime := time.Date(
 			creation.Year(),
@@ -62,7 +72,7 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		fmt.Println(clusterInfoFormatted(*cluster, timeDiff, apiUrlShort))
 	}
 
-	fmt.Printf("Total clusters: %v\n", len(presentClusters))
+	fmt.Printf("Total clusters: %v\n", len(filteredClusters))
 }
 
 func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort string) string {
