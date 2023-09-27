@@ -10,8 +10,9 @@ import (
 )
 
 type ClusterFilters struct {
-	ID        string
-	NameRegex string
+	ID              string
+	NameRegex       string
+	ManagedClusters bool
 }
 
 var currentDirectory *string
@@ -39,22 +40,17 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		presentClusters = clusters.Slice()
 	}
 
-	// Prompt only OSD/ROSA clusters
-	var filteredClusters []*v1.Cluster
-
-	for _, cluster := range presentClusters {
-		product_id := cluster.Product().ID()
-		if product_id != "ocp" {
-			filteredClusters = append(filteredClusters, cluster)
-		}
+	// Filter clusters to only get managed clusters
+	if clusterFilters.ManagedClusters {
+		presentClusters = ocmInstance.ListManagedClusters(presentClusters)
 	}
 
-	if len(filteredClusters) == 0 {
+	if len(presentClusters) == 0 {
 		fmt.Printf("No clusters found in ocm %s\n", ocmInstance.Connection.URL())
 		return
 	}
 
-	for _, cluster := range filteredClusters {
+	for _, cluster := range presentClusters {
 		creation := cluster.CreationTimestamp()
 		creationTime := time.Date(
 			creation.Year(),
@@ -72,7 +68,7 @@ func ClusterDetails(clusterFilters *ClusterFilters) {
 		fmt.Println(clusterInfoFormatted(*cluster, timeDiff, apiUrlShort))
 	}
 
-	fmt.Printf("Total clusters: %v\n", len(filteredClusters))
+	fmt.Printf("Total clusters: %v\n", len(presentClusters))
 }
 
 func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort string) string {

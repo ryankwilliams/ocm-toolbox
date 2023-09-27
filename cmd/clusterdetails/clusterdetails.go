@@ -15,6 +15,7 @@ var Cmd = &cobra.Command{
 var flags struct {
 	clusterID        string
 	clusterNameRegex string
+	managedClusters  bool
 }
 
 func init() {
@@ -32,11 +33,19 @@ func init() {
 		"",
 		"Regular expression to filter ocm clusters by name",
 	)
+	Cmd.Flags().BoolVarP(
+		&flags.managedClusters,
+		"managed-clusters",
+		"",
+		false,
+		"Toggle on to list only managed clusters, (default is all cluster types)",
+	)
 }
 
 func run(cmd *cobra.Command, argv []string) {
 	clusterdetails.ClusterDetails(&clusterdetails.ClusterFilters{
-		ID:        flags.clusterID,
-		NameRegex: flags.clusterNameRegex,
+		ID:              flags.clusterID,
+		NameRegex:       flags.clusterNameRegex,
+		ManagedClusters: flags.managedClusters,
 	})
 }

@@ -108,6 +108,17 @@ func (o *OCMInstance) ListClustersRegex(regex string) []*v1.Cluster {
 	return clusterList
 }
 
+func (o *OCMInstance) ListManagedClusters(clusters []*v1.Cluster) []*v1.Cluster {
+	var clusterList []*v1.Cluster
+
+	for _, cluster := range clusters {
+		if cluster.Product().ID() != "ocp" {
+			clusterList = append(clusterList, cluster)
+		}
+	}
+	return clusterList
+}
+
 func (o *OCMInstance) GetClusterCredentials(clusterID string) (string, *v1.ClusterCredentials) {
 	cluster := o.GetClusterBody(clusterID)
 
