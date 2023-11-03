@@ -1,4 +1,4 @@
-FROM golang:1.20 AS build
+FROM golang:1.21 AS build
 WORKDIR /tmp/src
 COPY . /tmp/src
 RUN CGO_ENABLED=0 go build -o /tmp/ocm-toolbox
