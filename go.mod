@@ -2,10 +2,7 @@ module github.com/ryankwilliams/ocm-toolbox
 
 go 1.21
 
-require (
-	github.com/spf13/cobra v1.7.0
-	gopkg.in/yaml.v3 v3.0.1
-)
+require github.com/spf13/cobra v1.7.0
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
@@ -45,11 +42,12 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/openshift-online/ocm-sdk-go v0.1.378
+	github.com/openshift-online/ocm-sdk-go v0.1.382
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.17.0
 )
