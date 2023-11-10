@@ -2,7 +2,7 @@ module github.com/ryankwilliams/ocm-toolbox
 
 go 1.21
 
-require github.com/spf13/cobra v1.7.0
+require github.com/spf13/cobra v1.8.0
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
