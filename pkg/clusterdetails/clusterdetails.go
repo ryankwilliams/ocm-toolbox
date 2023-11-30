@@ -3,6 +3,7 @@ package clusterdetails
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	v1 "github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
@@ -87,6 +88,10 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 
 	if cluster.Product().ID() == "rosa" {
 		clusterInfo += fmt.Sprintf("\n  ROSA HCP               : %v", cluster.Hypershift().Enabled())
+		if owner, exists := cluster.Properties()["rosa_creator_arn"]; exists {
+			ownerSlice := strings.Split(owner, "/")
+			clusterInfo += fmt.Sprintf("\n  Owner                  : %s", ownerSlice[len(ownerSlice)-1])
+		}
 	}
 
 	clusterInfo += fmt.Sprintf(`
