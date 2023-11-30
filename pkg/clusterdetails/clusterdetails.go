@@ -98,7 +98,6 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
   CLOUD PROVIDER         : %s
   REGION                 : %s
   STATE                  : %s
-  CONTROL PLANE NODES    : %v
   COMPUTE NODES          : %v
   CREATION               : %s
   UP TIME (H:M:S)        : %s
@@ -112,7 +111,6 @@ func clusterInfoFormatted(cluster v1.Cluster, timeDiff time.Time, apiUrlShort st
 		cluster.CloudProvider().ID(),
 		cluster.Region().ID(),
 		cluster.State(),
-		cluster.Nodes().Master(),
 		cluster.Nodes().Compute(),
 		cluster.CreationTimestamp(),
 		timeDiff.Format("15:4:5"),
