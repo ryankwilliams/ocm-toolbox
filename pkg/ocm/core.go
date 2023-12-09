@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strings"
 
 	sdk "github.com/openshift-online/ocm-sdk-go"
 	v1 "github.com/openshift-online/ocm-sdk-go/clustersmgmt/v1"
@@ -134,4 +135,14 @@ func (o *OCMInstance) GetClusterCredentials(clusterID string) (string, *v1.Clust
 	}
 
 	return cluster.Name(), response.Body()
+}
+
+func (o *OCMInstance) GetClusterCreator(cluster *v1.Cluster) string {
+	if cluster.Product().ID() == "rosa" {
+		if owner, exists := cluster.Properties()["rosa_creator_arn"]; exists {
+			ownerSlice := strings.Split(owner, "/")
+			return ownerSlice[len(ownerSlice)-1]
+		}
+	}
+	return "owner-n/a"
 }
