@@ -113,7 +113,7 @@ func (o *OCMInstance) ListManagedClusters(clusters []*v1.Cluster) []*v1.Cluster 
 
 	for _, cluster := range clusters {
 	    cluster_id := cluster.Product().ID()
-		if cluster_type != "ocp" && cluster_type != "aro" {
+		if cluster_id != "ocp" && cluster_id != "aro" {
 			clusterList = append(clusterList, cluster)
 		}
 	}
