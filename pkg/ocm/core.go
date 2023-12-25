@@ -113,7 +113,7 @@ func (o *OCMInstance) ListManagedClusters(clusters []*v1.Cluster) []*v1.Cluster 
 	var clusterList []*v1.Cluster
 
 	for _, cluster := range clusters {
-        if !slices.Contains([]string{"ocp", "aro"}, cluster.Product().ID()) {
+		if !slices.Contains([]string{"ocp", "aro"}, cluster.Product().ID()) {
 			clusterList = append(clusterList, cluster)
 		}
 	}
